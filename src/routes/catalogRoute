@@ -1,0 +1,12 @@
+// src/routes/referenceRoute.js
+const express = require('express');
+const router = express.Router();
+const catalogController = require('../controllers/catalogController');
+
+router.get('/modalities', catalogController.getModalities);
+router.get('/roles', catalogController.getRoles);
+router.get('/activity-types', catalogController.getActivityTypes);
+router.get('/statuses', catalogController.getStatuses);
+router.get('/workshifts', catalogController.getWorkshifts);
+
+module.exports = router;

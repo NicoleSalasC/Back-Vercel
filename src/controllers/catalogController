@@ -1,0 +1,48 @@
+// src/controllers/referenceController.js
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
+
+exports.getModalities = async (req, res) => {
+  try {
+    const data = await prisma.modality.findMany();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: 'Error fetching modalities' });
+  }
+};
+
+exports.getRoles = async (req, res) => {
+  try {
+    const data = await prisma.role.findMany();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: 'Error fetching roles' });
+  }
+};
+
+exports.getActivityTypes = async (req, res) => {
+  try {
+    const data = await prisma.activity_type.findMany();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: 'Error fetching activity types' });
+  }
+};
+
+exports.getStatuses = async (req, res) => {
+  try {
+    const data = await prisma.status.findMany();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: 'Error fetching statuses' });
+  }
+};
+
+exports.getWorkshifts = async (req, res) => {
+  try {
+    const data = await prisma.workshift.findMany();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: 'Error fetching workshifts' });
+  }
+};

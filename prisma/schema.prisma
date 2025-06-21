@@ -1,0 +1,134 @@
+generator client {
+  provider = "prisma-client-js"
+
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model activity {
+  activity_id      Int            @id @default(autoincrement())
+  declaration_id   Int?
+  activity_type_id Int?
+  course_id        Int?
+  classroom_id     Int?
+  weekday          String?        @db.VarChar(15)
+  start_time       DateTime?      @db.Time(0)
+  end_time         DateTime?      @db.Time(0)
+  description      String?        @db.Text
+  start_date       DateTime?      @db.Date
+  end_date         DateTime?      @db.Date
+  declaration      declaration?   @relation(fields: [declaration_id], references: [djh_id], onDelete: Restrict, onUpdate: Restrict, map: "activity_ibfk_1")
+  activity_type    activity_type? @relation(fields: [activity_type_id], references: [activity_type_id], onDelete: Restrict, onUpdate: Restrict, map: "activity_ibfk_2")
+  course           course?        @relation(fields: [course_id], references: [course_id], onDelete: Restrict, onUpdate: Restrict, map: "activity_ibfk_3")
+  classroom        classroom?     @relation(fields: [classroom_id], references: [classroom_id], onDelete: Restrict, onUpdate: Restrict, map: "activity_ibfk_4")
+
+  @@index([classroom_id], map: "id_aula")
+  @@index([course_id], map: "id_curso")
+  @@index([declaration_id], map: "id_djh")
+  @@index([activity_type_id], map: "id_tipo_actividad")
+}
+
+model activity_type {
+  activity_type_id          Int        @id @default(autoincrement())
+  activity_type_description String     @db.VarChar(50)
+  activity                  activity[]
+}
+
+model classroom {
+  classroom_id       Int        @id @default(autoincrement())
+  classroom_code     String?    @db.VarChar(20)
+  location           String?    @db.VarChar(100)
+  classroom_capacity Int?
+  type               String?    @db.VarChar(50)
+  activity           activity[]
+}
+
+model course {
+  course_id      Int        @id @default(autoincrement())
+  course_code    String?    @unique(map: "codigo") @db.VarChar(20)
+  course_name    String?    @db.VarChar(100)
+  modality_id    Int?
+  official_hours Int?
+  active         Boolean?
+  activity       activity[]
+  modality       modality?  @relation(fields: [modality_id], references: [modality_id], onDelete: Restrict, onUpdate: Restrict, map: "course_ibfk_1")
+
+  @@index([modality_id], map: "id_modalidad")
+}
+
+model declaration {
+  djh_id            Int          @id @default(autoincrement())
+  user_id           Int
+  status_id         Int
+  creation_date     DateTime     @db.Date
+  teacher_signature Boolean?     @default(false)
+  academic_cycle    String       @db.VarChar(20)
+  version           Int?         @default(1)
+  activity          activity[]
+  user              user         @relation(fields: [user_id], references: [user_id], onUpdate: Restrict, map: "declaration_ibfk_1")
+  status            status       @relation(fields: [status_id], references: [status_id], onUpdate: Restrict, map: "declaration_ibfk_2")
+  validation        validation[]
+
+  @@index([status_id], map: "id_estado")
+  @@index([user_id], map: "id_usuario")
+}
+
+model modality {
+  modality_id          Int      @id @default(autoincrement())
+  modality_description String   @db.VarChar(50)
+  course               course[]
+}
+
+model role {
+  role_id          Int    @id @default(autoincrement())
+  role_description String @db.VarChar(50)
+  user             user[]
+}
+
+model status {
+  status_id          Int           @id @default(autoincrement())
+  status_description String        @db.VarChar(50)
+  declaration        declaration[]
+  validation         validation[]
+}
+
+model user {
+  user_id      Int           @id @default(autoincrement())
+  user_name    String?       @db.VarChar(100)
+  email        String?       @unique(map: "correo_institucional") @db.VarChar(100)
+  role_id      Int?
+  workshift_id Int?
+  declaration  declaration[]
+  role         role?         @relation(fields: [role_id], references: [role_id], onDelete: Restrict, onUpdate: Restrict, map: "user_ibfk_1")
+  workshift    workshift?    @relation(fields: [workshift_id], references: [workshift_id], onDelete: Restrict, onUpdate: Restrict, map: "user_ibfk_2")
+  validation   validation[]
+
+  @@index([workshift_id], map: "id_jornada")
+  @@index([role_id], map: "id_rol")
+}
+
+model validation {
+  validation_id     Int          @id @default(autoincrement())
+  declaration_id    Int?
+  validator_id      Int?
+  validation_date   DateTime?    @db.Date
+  notes             String?      @db.Text
+  validation_status Int
+  status            status       @relation(fields: [validation_status], references: [status_id], onUpdate: Restrict, map: "fk_validation_status")
+  declaration       declaration? @relation(fields: [declaration_id], references: [djh_id], onDelete: Restrict, onUpdate: Restrict, map: "validation_ibfk_1")
+  user              user?        @relation(fields: [validator_id], references: [user_id], onDelete: Restrict, onUpdate: Restrict, map: "validation_ibfk_2")
+
+  @@index([validation_status], map: "fk_validation_status")
+  @@index([declaration_id], map: "id_djh")
+  @@index([validator_id], map: "id_validador")
+}
+
+model workshift {
+  workshift_id          Int    @id @default(autoincrement())
+  workshift_description String @db.VarChar(50)
+  max_weekly_hours      Int
+  user                  user[]
+}
