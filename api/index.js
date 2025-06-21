@@ -68,3 +68,4 @@ app.use('/api/classroom', classroomRoute);
 
 
 
+module.exports = app
