@@ -1,49 +1,49 @@
 const express = require('express')
 const app = express()
 const cors = require('cors');
-const port = 3000
-
-
-app.use(express.json()) // Transforma el JSON a un objeto que JS entienda. Para que el controlador lo maneje bien
-
-
+const port = 5000
+app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
 
-const loginRoute = require("./src/routes/loginRoute")
+const loginRoute = require("../src/routes/loginRoute")
 
-const userRoute = require("./src/routes/userRoute");
+const userRoute = require("../src/routes/userRoute");
 
-const declarationRoute = require('./src/routes/declarationRoute');
+const declarationRoute = require('../src/routes/declarationRoute');
 
-const activityRoute = require('./src/routes/activityRoute');
+const activityRoute = require('../src/routes/activityRoute');
 
-const courseRoute = require('./src/routes/courseRoute');
+const courseRoute = require('../src/routes/courseRoute');
 
-const validationRoute = require('./src/routes/validationRoute');
+const validationRoute = require('../src/routes/validationRoute');
 
-const catalogRoute = require('./src/routes/catalogRoute');
+const catalogRoute = require('../src/routes/catalogRoute');
 
-const classroomRoute = require('./src/routes/classroomRoute');
-
-
+const classroomRoute = require('../src/routes/classroomRoute');
 
 
-const allowedOrigins = ['http://localhost:5173', 'http://localhost:5175'];
 
-app.use(cors({
+
+//const allowedOrigins = ['http://localhost:5173', 'http://localhost:5175'];
+const allowedOrigins = [
+  "https://proyecto-languajes-vercel-sheysonn44s-projects.vercel.app","https://localhost:5173" // tu frontend en Vercel
+];
+
+const corsOptions = {
   origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      callback(new Error("Not allowed by CORS"));
     }
   },
-  credentials: false,
-}));
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  credentials: true,
+};
+app.options("*", cors(corsOptions)); // Responde a preflight
 
-
-
+app.use(cors(corsOptions));
 // Ruta base para utilizar el servicio
 app.get("/api", function(req, res) {
   res.writeHead(200, { 'Content-Type': 'text/plain' });
@@ -69,7 +69,7 @@ app.use('/api/classroom', classroomRoute);
 
 
 
+ 
 app.listen(port, () => {
-  console.log(`Example app listening on 
-    port ${port}`)
-})
+  console.log(`Example app listening on port ${port}`)
+});

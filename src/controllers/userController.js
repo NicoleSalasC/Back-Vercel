@@ -69,3 +69,14 @@
       res.status(400).json({ error: 'Error deleting user' });
     }
   };
+
+  module.exports={
+
+getUserById: exports.getUserById,
+getAllUsers:exports.getAllUsers,
+createUser: exports.createUser,
+deleteUser:exports.deleteUser,
+updateUser:exports.updateUser
+
+
+  }
