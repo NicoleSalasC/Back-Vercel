@@ -26,6 +26,7 @@ const catalogRoute = require('../src/routes/catalogRoute');
 const classroomRoute = require('../src/routes/classroomRoute');
 
 
+const login = require('../src/routes/loginRoute');
 
 
 const allowedOrigins = ['http://localhost:5173', 'http://localhost:5175'];
@@ -67,5 +68,6 @@ app.use('/api/catalog', catalogRoute);
 app.use('/api/classroom', classroomRoute);
 
 
+app.use('/api/login', loginRoute);
 
 module.exports = app
