@@ -61,3 +61,14 @@ exports.deleteCourse = async (req, res) => {
     res.status(500).json({ error: 'Error creating course', detail: error.message });
   }
 };
+
+  module.exports={
+
+getCourseById: exports.getCourseById,
+getAllCourses:exports.getAllCourses,
+createCourse: exports.createCourse,
+deleteCourse:exports.deleteCourse,
+updateCourse:exports.updateCourse
+
+
+  }

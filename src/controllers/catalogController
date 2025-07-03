@@ -1,5 +1,5 @@
-// src/controllers/referenceController.js
 const { PrismaClient } = require('@prisma/client');
+const { createConnection } = require('mysql2');
 const prisma = new PrismaClient();
 
 exports.getModalities = async (req, res) => {
@@ -46,3 +46,14 @@ exports.getWorkshifts = async (req, res) => {
     res.status(500).json({ error: 'Error fetching workshifts' });
   }
 };
+
+  module.exports={
+
+getModalities: exports.getModalities,
+getRoles:exports.getRoles,
+getActivityTypes: exports.getActivityTypes,
+getStatuses:exports.getStatuses,
+getWorkshifts:exports.getWorkshifts
+
+
+  }

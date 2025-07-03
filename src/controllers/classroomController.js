@@ -1,4 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
+const { createConnection } = require('mysql2');
 const prisma = new PrismaClient();
 
 exports.getAllClassrooms = async (req, res) => {
@@ -70,3 +71,14 @@ exports.deleteClassroom = async (req, res) => {
     res.status(400).json({ error: 'Error deleting classroom', detail: error.message });
   }
 };
+
+  module.exports={
+
+getClassroomById: exports.getClassroomById,
+getAllClassrooms:exports.getAllClassrooms,
+createClassroom: exports.createClassroom,
+deleteClassroom:exports.deleteClassroom,
+updateClassroom:exports.updateClassroom
+
+
+  }

@@ -64,3 +64,15 @@ exports.deleteDeclaration = async (req, res) => {
    res.status(500).json({ error: 'Error deleting a declaration', detail: error.message });
   }
 };
+
+
+  module.exports={
+
+getDeclarationById: exports.getDeclarationById,
+getAllDeclarations:exports.getAllDeclarations,
+createDeclaration: exports.createDeclaration,
+deleteDeclaration:exports.deleteDeclaration,
+updateDeclaration:exports.updateDeclaration
+
+
+  }

@@ -126,3 +126,14 @@ exports.deleteValidation = async (req, res) => {
     res.status(500).json({ error: 'Error deleting validation' });
   }
 };
+
+  module.exports={
+
+getValidationById: exports.getValidationById,
+getAllValidations:exports.getAllValidations,
+createValidation: exports.createValidation,
+deleteValidation:exports.deleteValidation,
+updateValidation:exports.updateValidation
+
+
+  }

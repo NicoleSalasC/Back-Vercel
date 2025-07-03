@@ -79,3 +79,14 @@ exports.deleteActivity = async (req, res) => {
     res.status(400).json({ error: 'Error deleting activity' });
   }
 };
+
+  module.exports={
+
+getActivityById: exports.getActivityById,
+getAllActivities:exports.getAllActivities,
+createActivity: exports.createActivity,
+deleteActivity:exports.deleteActivity,
+updateActivity:exports.updateActivity
+
+
+  }
