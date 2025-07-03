@@ -27,7 +27,7 @@ const classroomRoute = require('../src/routes/classroomRoute');
 
 //const allowedOrigins = ['http://localhost:5173', 'http://localhost:5175'];
 const allowedOrigins = [
-  "https://proyecto-languajes-vercel-sheysonn44s-projects.vercel.app","https://localhost:5173" // tu frontend en Vercel
+  "https://front-bueno-vercel.vercel.app/","https://localhost:5173" // tu frontend en Vercel
 ];
 
 const corsOptions = {
