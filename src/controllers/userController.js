@@ -2,17 +2,18 @@
 
   const { PrismaClient } = require('@prisma/client');
   const prisma = new PrismaClient();
+  const bcrypt = require('bcrypt');
 
   exports.getAllUsers = async (req, res) => {
     try {
       const users = await prisma.user.findMany();
       res.json(users);
     } catch (error) {
-      console.error("ERROR REAL:", error); // 👈 esto lo vas a ver en los Logs de Vercel
+      console.error("ERROR REAL:", error); 
     res.status(500).json({ error: 'Error fetching users', detail: error.message });
     }
   };
-
+ 
   exports.getUserById = async (req, res) => {
     try {
       const user = await prisma.user.findUnique({
@@ -25,27 +26,27 @@
   };
 
   exports.createUser = async (req, res) => {
-    try {
-      const { user_name, email, role_id, workshift_id } = req.body;
+  try {
+    const { user_name, email, password, workshift_id } = req.body;
 
-      const newUser = await prisma.user.create({
-        data: {
-          user_name,
-          email,
-          role: {
-            connect: { role_id: parseInt(role_id) }
-          },
-          workshift: {
-            connect: { workshift_id: parseInt(workshift_id) }
-          }
+    const hashedPassword = await bcrypt.hash(password, 10); // encriptar
+
+    const newUser = await prisma.user.create({
+      data: {
+        user_name,
+        email,
+        password: hashedPassword,
+        workshift: {
+          connect: { workshift_id: parseInt(workshift_id) }
         }
-      });
+      }
+    });
 
-      res.status(201).json(newUser);
-    } catch (error) {
-      res.status(500).json({ error: 'Error creating user', detail: error.message });
-    }
-  };
+    res.status(201).json(newUser);
+  } catch (error) {
+    res.status(500).json({ error: 'Error creating user', detail: error.message });
+  }
+};
 
   exports.updateUser = async (req, res) => {
     try {

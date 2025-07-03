@@ -1,23 +1,24 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const { generateToken } = require('../../auth');
+const bcrypt = require('bcrypt');
 
 exports.login = async (req, res) => {
-  const { id, password } = req.body;
+  const { email, password } = req.body;
 
   try {
-    const teacher = await prisma.teacher.findUnique({
-      where: { id: parseInt(id) },
+    const user = await prisma.user.findUnique({
+      where: { email }
     });
 
-    if (!teacher || teacher.password !== password) {
+    if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(401).json({ message: 'Credenciales inválidas' });
     }
 
-    const token = generateToken(teacher);
+    const token = generateToken(user);
     res.json({ token });
   } catch (error) {
-    res.status(500).json({ error: 'Error al iniciar sesión' });
+    res.status(500).json({ error: 'Error al iniciar sesión', detail: error.message });
   }
 };
 

@@ -51,7 +51,6 @@ app.get("/api", function(req, res) {
 });
 
 
-app.use("/api/login", loginRoute)
 
 app.use("/api/user", userRoute);
 
