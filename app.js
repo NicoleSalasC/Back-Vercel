@@ -1,26 +1,26 @@
 const express = require('express')
 const app = express()
 const cors = require('cors');
-const port = 5000
+const port = 3000
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
 
-const loginRoute = require("../src/routes/loginRoute")
+const loginRoute = require("./src/routes/loginRoute")
 
-const userRoute = require("../src/routes/userRoute");
+const userRoute = require("./src/routes/userRoute");
 
-const declarationRoute = require('../src/routes/declarationRoute');
+const declarationRoute = require('./src/routes/declarationRoute');
 
-const activityRoute = require('../src/routes/activityRoute');
+const activityRoute = require('./src/routes/activityRoute');
 
-const courseRoute = require('../src/routes/courseRoute');
+const courseRoute = require('./src/routes/courseRoute');
 
-const validationRoute = require('../src/routes/validationRoute');
+const validationRoute = require('./src/routes/validationRoute');
 
-const catalogRoute = require('../src/routes/catalogRoute');
+const catalogRoute = require('./src/routes/catalogRoute');
 
-const classroomRoute = require('../src/routes/classroomRoute');
+const classroomRoute = require('./src/routes/classroomRoute');
 
 
 
@@ -41,7 +41,6 @@ const corsOptions = {
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   credentials: true,
 };
-app.options("*", cors(corsOptions)); // Responde a preflight
 
 app.use(cors(corsOptions));
 // Ruta base para utilizar el servicio

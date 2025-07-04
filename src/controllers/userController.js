@@ -29,7 +29,7 @@
   try {
     const { user_name, email, password, workshift_id } = req.body;
 
-    const hashedPassword = await bcrypt.hash(password, 10); // encriptar
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = await prisma.user.create({
       data: {
